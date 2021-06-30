@@ -9,12 +9,12 @@
 #
 
 cat << EOF > deployments/mongo-init.js
-var db = connect("mongodb://localhost/huskyCIDB");
+var db = connect("mongodb://localhost/${HUSKYCI_DATABASE_DB_NAME}");
 
 db.createUser(
     {
-        user: "huskyCIUser",
-        pwd: "huskyCIPassword",
+        user: "${HUSKYCI_DATABASE_DB_USERNAME}",
+        pwd: "${HUSKYCI_DATABASE_DB_PASSWORD}",
         roles: [{ role: "userAdminAnyDatabase", db: "admin" }]
     }
 );
