@@ -1,4 +1,12 @@
 FROM golang:1.15
+WORKDIR /go/src/app
+COPY api/ .
+RUN CGO_ENABLED=0 go build -o huskyci-api server.go
 
-ADD api/ /go/src/github.com/globocom/huskyCI/api/
-WORKDIR /go/src/github.com/globocom/huskyCI/api/
+FROM debian:stable-slim
+RUN useradd huskyci
+USER huskyci
+WORKDIR /app
+COPY --from=0 /go/src/app/huskyci-api ./
+EXPOSE 8888
+CMD ["/app/huskyci-api"]

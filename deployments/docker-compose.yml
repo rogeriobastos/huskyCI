@@ -3,8 +3,6 @@ services:
     api:
         container_name: huskyCI_API
         environment:
-            GOPATH: /go/
-            # required envs
             HUSKYCI_DATABASE_DB_ADDR: mongodb
             HUSKYCI_DATABASE_DB_NAME: ${HUSKYCI_DATABASE_DB_NAME}
             HUSKYCI_DATABASE_DB_USERNAME: ${HUSKYCI_DATABASE_DB_USERNAME}
@@ -17,8 +15,8 @@ services:
         build:
             context: ../
             dockerfile: deployments/dockerfiles/api.Dockerfile
-        command: "go run server.go"
         volumes:
+            - ${HUSKYCI_PATH}/api/config.yaml:/app/config.yaml
             - ${HUSKYCI_CERT_PATH}/api:/certs:ro
         ports:
           - "8888:8888"
@@ -26,6 +24,7 @@ services:
             - huskyCI_net
         depends_on:
             - mongodb
+        restart: always
 
     mongodb:
         container_name: huskyCI_MongoDB
