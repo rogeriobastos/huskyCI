@@ -114,17 +114,14 @@ function createServerCert {
 function createClientCert {
     checkCAFilesExist
 
-    openssl genrsa -out $TARGETDIR/client-key.pem 4096
-    openssl req -subj "/CN=$NAME" -new -key $TARGETDIR/client-key.pem -out $TARGETDIR/client.csr
+    openssl genrsa -out $TARGETDIR/key.pem 4096
+    openssl req -subj "/CN=$NAME" -new -key $TARGETDIR/key.pem -out $TARGETDIR/client.csr
     echo "extendedKeyUsage = clientAuth" > $TARGETDIR/extfile.cnf
-    openssl x509 -passin pass:$PASSWORD -req -days $EXPIRATIONDAYS -in $TARGETDIR/client.csr -CA $TARGETDIR/ca.pem -CAkey $TARGETDIR/ca-key.pem -CAcreateserial -out $TARGETDIR/client-cert.pem -extfile $TARGETDIR/extfile.cnf
+    openssl x509 -passin pass:$PASSWORD -req -days $EXPIRATIONDAYS -in $TARGETDIR/client.csr -CA $TARGETDIR/ca.pem -CAkey $TARGETDIR/ca-key.pem -CAcreateserial -out $TARGETDIR/cert.pem -extfile $TARGETDIR/extfile.cnf
 
     rm $TARGETDIR/client.csr $TARGETDIR/extfile.cnf $TARGETDIR/ca.srl
-    chmod 0400 $TARGETDIR/client-key.pem
-    chmod 0444 $TARGETDIR/client-cert.pem
-
-    mv $TARGETDIR/client-key.pem $TARGETDIR/client-$NAME-key.pem
-    mv $TARGETDIR/client-cert.pem $TARGETDIR/client-$NAME-cert.pem
+    chmod 0400 $TARGETDIR/key.pem
+    chmod 0444 $TARGETDIR/cert.pem
 }
 
 
