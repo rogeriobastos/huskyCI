@@ -29,10 +29,6 @@ services:
 
     mongodb:
         container_name: huskyCI_MongoDB
-        environment:
-            DATABASE: ${HUSKYCI_DATABASE_DB_NAME}
-            DATABASE_USER: ${HUSKYCI_DATABASE_DB_USERNAME}
-            DATABASE_PASS: ${HUSKYCI_DATABASE_DB_PASSWORD}
         build:
             context: ../
             dockerfile: deployments/dockerfiles/db.Dockerfile
