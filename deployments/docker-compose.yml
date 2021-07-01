@@ -1,7 +1,7 @@
 version: '3'
 services:
     api:
-        container_name: huskyCI_API
+        container_name: huskyci-api
         environment:
             HUSKYCI_DATABASE_DB_ADDR: mongodb
             HUSKYCI_DATABASE_DB_NAME: ${HUSKYCI_DATABASE_DB_NAME}
@@ -12,6 +12,7 @@ services:
             HUSKYCI_API_ALLOW_ORIGIN_CORS: ${HUSKYCI_API_ALLOW_ORIGIN_CORS}
             HUSKYCI_DOCKERAPI_ADDR: ${HUSKYCI_DOCKERAPI_ADDR}
             HUSKYCI_DOCKERAPI_CERT_PATH: /certs/
+        image: huskyci-api
         build:
             context: ../
             dockerfile: deployments/dockerfiles/api.Dockerfile
@@ -27,7 +28,8 @@ services:
         restart: always
 
     mongodb:
-        container_name: huskyCI_MongoDB
+        container_name: huskyci-mongodb
+        image: huskyci-mongodb
         build:
             context: ../
             dockerfile: deployments/dockerfiles/db.Dockerfile
