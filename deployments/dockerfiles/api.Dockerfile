@@ -1,7 +1,7 @@
 FROM golang:1.15
 WORKDIR /go/src/app
 COPY api/ .
-RUN CGO_ENABLED=0 go build -o huskyci-api server.go
+RUN go build -o huskyci-api server.go
 
 FROM debian:stable-slim
 RUN useradd huskyci
