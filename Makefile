@@ -81,9 +81,11 @@ check-containers-version:
 	./deployments/scripts/check-containers-version.sh
 
 ## Composes huskyCI environment using docker-compose
-compose:
+compose-up:
+	docker-compose -f deployments/docker-compose.yml up -d --build
+
+compose-down:
 	docker-compose -f deployments/docker-compose.yml down -v
-	docker-compose -f deployments/docker-compose.yml up -d --build --force-recreate
 
 ## Creates certs and sets all config to huskyCI_Docker_API
 create-certs:
