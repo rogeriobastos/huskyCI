@@ -78,12 +78,44 @@ echo "export HUSKYCI_API_ALLOW_ORIGIN_CORS='\"*\"'" >> $HUSKYCI_PATH/.env
 source $HUSKYCI_PATH/.env
 ```
 
-**Build and run containers**
+**Building and running HuskyCI Server**
 
 Docker compose will start up huskyCI and mongodb. You can reach uskyCI API at `http://localhost:8888/`.
 
 ```
 make compose-up
+```
+
+**Building and running HuskyCI Client**
+
+You can build and run it locally if you have golang installed.
+The command `make build-client` will create the binary file at `./client/cmd/huskyci-client-bin`.
+
+Export the required variables and run it.
+
+```
+export HUSKYCI_CLIENT_REPO_URL="https://github.com/globocom/huskyCI.git"
+export HUSKYCI_CLIENT_REPO_BRANCH="poc-golang-gosec"
+export HUSKYCI_CLIENT_API_ADDR="http://localhost:8888"
+export HUSKYCI_CLIENT_API_USE_HTTPS="false"
+./client/cmd/huskyci-client-bin
+```
+
+However it's possible to build and run everything inside docker (no need to install golang).
+The command `make build-client-container` will create a docker image called `huskyci-client`.
+
+Create a file with the required environment variables and pass it when run the docker image.
+The API address will be your local IP and there is no need to use quotation marks to set variables.
+
+```
+cat << EOF > client-env
+HUSKYCI_CLIENT_REPO_URL=https://github.com/globocom/huskyCI.git
+HUSKYCI_CLIENT_REPO_BRANCH=poc-golang-gosec
+HUSKYCI_CLIENT_API_ADDR=http://1.2.3.4:8888
+HUSKYCI_CLIENT_API_USE_HTTPS=false
+EOF
+
+docker run --rm --env-file client-env huskyci-client
 ```
 
 ## License

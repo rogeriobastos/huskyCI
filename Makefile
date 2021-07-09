@@ -45,6 +45,10 @@ build-client:
 build-client-linux:
 	cd client/cmd && GOOS=linux GOARCH=amd64 $(GO) build -ldflags $(LDFLAGS) -o "$(HUSKYCI-CLIENT-BIN)" main.go
 
+## Builds client code using linux architecture into a binary
+build-client-container:
+	cd client && docker build -t huskyci-client .
+
 ## Builds cli code into a binary
 build-cli:
 	cd cli && $(GO) build -ldflags $(LDFLAGS) -o "$(HUSKYCI-CLI-BIN)" main.go
